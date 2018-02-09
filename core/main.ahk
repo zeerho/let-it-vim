@@ -25,7 +25,7 @@ Main()
 		Msgbox, 未读到环境变量 AHK_PROFILE，将不加载所有环境敏感的配置
 	}
 
-	;InitQuickRun(ini)
+	InitQuickRun(ini)
 	InitCommons(ini)
 }
 
