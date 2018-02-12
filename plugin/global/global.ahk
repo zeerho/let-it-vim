@@ -72,6 +72,22 @@ return
 	Send, {Right}
 return
 
+<WheelUp>:
+	Send, {WheelUp}
+return
+
+<WheelDown>:
+	Send, {WheelDown}
+return
+
+<WheelLeft>:
+	Send, {WheelLeft}
+return
+
+<WheelRight>:
+	Send, {WheelRight}
+return
+
 <Home>:
 	Send, {Home}
 return
@@ -91,6 +107,10 @@ return
 
 <space>:
 	Send, {space}
+return
+
+<Back_Quote>:
+	Send, ``
 return
 
 
@@ -127,14 +147,22 @@ return
 	Send, +{Right}
 return
 
+<Next_Line>:
+	Send, {End}{Enter}
+return
+
+<Prev_Line>:
+	Send, {Home}{Enter}{Up}
+return
+
 <New_Line_Forward>:
 	Gosub, <Global_To_Insert>
-	Send, {End}{Enter}
+	Gosub, <Next_Line>
 return
 
 <New_Line_Backward>:
 	Gosub, <Global_To_Insert>
-	Send, {Home}{Enter}{Up}
+	Gosub, <Prev_Line>
 return
 
 <Move_To_First_Line>:
@@ -175,14 +203,38 @@ return
 	Send, ^x
 return
 
-<Copy_A_Line>:
+<Yank_A_Line>:
 	Gosub, <Select_A_Line>
 	Send, ^c
+	Gosub, <Cancel_Selection>
 return
 
-<Delete_A_Line>:
+<Cut_To_Begin>:
+	Gosub, <Select_To_Begin>
+	Send, ^x
+	Gosub, <Global_To_Insert>
+return
+
+<Cut_To_End>:
+	Gosub, <Select_To_End>
+	Send, ^x
+	Gosub, <Global_To_Insert>
+return
+
+<Cut_A_Line_And_Delete_EOL>:
 	Gosub, <Select_A_Line>
+	Send, ^x
 	Gosub, <Delete>
+return
+
+<Paste_At_New_Line_Forward>:
+	Gosub, <Next_Line>
+	Send, ^v
+return
+
+<Paste_At_New_Line_Backward>:
+	Gosub, <Prev_Line>
+	Send, ^v
 return
 
 <Next_Tab>:
@@ -209,6 +261,23 @@ return
 	MouseMove, 20, 0, 0, R
 return
 
+<Half_Page_Up>:
+	Loop, 10 {
+		Send, {Up}
+	}
+return
+
+<Half_Page_Down>:
+	Loop, 10 {
+		Send, {Down}
+	}
+return
+
+; 取消文字选中状态，暂未想到更完善的办法
+<Cancel_Selection>:
+	Gosub, <Left>
+	Gosub, <Right>
+return
 
 
 ;=============================================
@@ -220,7 +289,6 @@ return
  */
 GetProgramInstance(label)
 {
-	path := quickRunMap[label]
 	If !RegExMatch(label, "i)<Run_(.*?)>", _class)
 	{
 		Msgbox, 打开程序失败，指定标签不符合命名规范！%label%
@@ -242,6 +310,7 @@ GetProgramInstance(label)
 	}
 	else
 	{
+		path := quickRunMap[label]
 		Run %path%
 	}
 	DetectHiddenWindows, off

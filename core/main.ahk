@@ -173,7 +173,11 @@ InitSucKeys()
 	k["gg"] := "<Move_To_First_Line>"
 	k["gn"] := "<NEXT_TAB>"
 	k["gp"] := "<PREV_TAB>"
-	k["dd"] := "<Cut_A_Line>"
-	k["yy"] := "<Copy_A_Line>"
+	;k["c$"] := "<Cut_To_End>"
+	;k["c^"] := "<Cut_To_Begin>"
+	;k["c0"] := "<Cut_To_Begin>"
+	k["cc"] := "<Cut_A_Line>"
+	k["dd"] := "<Cut_A_Line_And_Delete_EOL>"
+	k["yy"] := "<Yank_A_Line>"
 	return k
 }
